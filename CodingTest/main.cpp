@@ -4,40 +4,37 @@ using namespace std;
 
 int main()
 {
-	// 시험을 본 과목의 갯수
-	int N = 0;
-	cin >> N;
+	// 시간 단축을 위한 독립 버퍼 사용
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
 
-	// 과목 데이터 저장 배열
-	int A[1000];
+	// N(숫자 개수), Q(질의 개수)
+	int N, Q;
+	cin >> N >> Q;
 
-	// 배열의 길이만큼 반복
-	for (int i = 0; i < N; i++)
+	// S(합 배열)
+	int S[100000] = {};
+
+	// 숫자 개수만큼 반복
+	for (int i = 1; i <= N; i++)
 	{
-		// 점수 저장
-		cin >> A[i];
+		// 구간 합 구하기
+		int Temp;
+		cin >> Temp;
+		S[i] = S[i - 1] + Temp;
 	}
 
-	// 총점과 최고점 변수
-	long Sum = 0;
-	long Max = 0;
-
-	// 배열의 길이만큼 반복
-	for (int i = 0; i < N; i++)
+	// 질의 개수만큼 반복
+	for (int i = 0; i < Q; i++)
 	{
-		// 최고점을 판별하여 저장
-		if (A[i] > Max)
-		{
-			Max = A[i];
-		}
+		// 질의 범위 받기
+		int Start, End;
+		cin >> Start >> End;
 
-		// 총점 계산
-		Sum += A[i];
+		// 부분 합 출력
+		cout << S[End] - S[Start - 1] << "\n";
 	}
-
-	// 총점 * 100 / 최고점 / 과목수 계산 후 출력
-	double Result = Sum * 100.0 / Max / N;
-	cout << Result << "\n";
 
 	return 0;
 }
