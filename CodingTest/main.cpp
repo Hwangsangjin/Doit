@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -9,31 +10,36 @@ int main()
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	// N(숫자 개수), Q(질의 개수)
+	// N(배열 크기), Q(질의 수)
 	int N, Q;
 	cin >> N >> Q;
 
-	// S(합 배열)
-	int S[100000] = {};
+	// A(원본 배열), D(합 배열)
+	vector<vector<int>> A(N + 1, vector<int>(N + 1, 0));
+	vector<vector<int>> D(N + 1, vector<int>(N + 1, 0));
 
-	// 숫자 개수만큼 반복
+	// N만큼 반복
 	for (int i = 1; i <= N; i++)
 	{
-		// 구간 합 구하기
-		int Temp;
-		cin >> Temp;
-		S[i] = S[i - 1] + Temp;
+		for (int j = 1; j <= N; j++)
+		{
+			// 원본 배열 저장
+			cin >> A[i][j];
+
+			// 합 배열 저장
+			D[i][j] = D[i][j - 1] + D[i - 1][j] - D[i - 1][j - 1] + A[i][j];
+		}
 	}
 
-	// 질의 개수만큼 반복
+	// Q만큼 반복
 	for (int i = 0; i < Q; i++)
 	{
-		// 질의 범위 받기
-		int Start, End;
-		cin >> Start >> End;
+		int X1, Y1, X2, Y2;
+		cin >> X1 >> Y1 >> X2 >> Y2;
 
-		// 부분 합 출력
-		cout << S[End] - S[Start - 1] << "\n";
+		// 질의 계산 및 출력
+		int Result = D[X2][Y2] - D[X1 - 1][Y2] - D[X2][Y1 - 1] + D[X1 - 1][Y1 - 1];
+		cout << Result << "\n";
 	}
 
 	return 0;
